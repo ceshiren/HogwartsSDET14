@@ -4,9 +4,8 @@
 import sys
 
 import pytest
-import yaml
 
-print(sys.path.append('..'))
+print(sys.path.append('../..'))
 from pythoncode.calc import Calculator
 
 
@@ -33,35 +32,6 @@ def test_case1():
     print("testcase1")
 
 
-with open("datas/calc.yml") as f:
-    datas = yaml.safe_load(f)
-    addids = datas['add'].keys()
-    adddatas = datas['add'].values()
-
-    divids = datas['div'].keys()
-    divdatas = datas['div'].values()
-
-
-def get_steps():
-    with open('steps/add.yml') as f:
-        steps = yaml.safe_load(f)
-    return steps
-
-
-cal = Calculator()
-
-
-def steps(a, b, result):
-    steps1 = get_steps()
-    for step in steps1:
-        if 'add' == step:
-            assert result == cal.add(a, b)
-        elif 'add1' == step:
-            assert result == cal.add1(a, b)
-        elif 'add2' == step:
-            assert result == cal.add2(a, b)
-
-
 class TestCalc:
     # setup_class， teardown_class每个类里面 执行前后分别 执行
     def setup_class(self):
@@ -78,15 +48,20 @@ class TestCalc:
     def teardown(self):
         print("teardown")
 
-    @pytest.mark.parametrize('a, b, result', adddatas
-        , ids=addids)
+    @pytest.mark.parametrize('a, b, result', [
+        (1, 1, 3),
+        (2, 2, 4),
+        (100, 100, 200),
+        (0.1, 0.1, 0.2),
+        (-1, -1, -2)
+    ]
+        , ids=['int', 'int', 'bignum', 'float', 'fushu'])
     # @pytest.mark.add
     def test_add(self, a, b, result):
-        steps(a, b, result)
         # cal = Calculator()
-        # assert result == self.cal.add(a, b)
-        # assert result == self.cal.add1(a, b)
-        # assert result == self.cal.add2(a, b)
+        assert result == self.cal.add(a, b)
+        assert result == self.cal.add(a, b)
+        assert result == self.cal.add(a, b)
 
     # @pytest.mark.add
     def test_add1(self):
@@ -94,11 +69,10 @@ class TestCalc:
         assert 3 == self.cal.add(1, 2)
 
     # @pytest.mark.div
-    @pytest.mark.parametrize('a,b,c', divdatas, ids=divids)
-    def test_div(self, a, b, c):
+    def test_div(self):
         # cal = Calculator()
         print("登录操作111")
-        assert c == self.cal.div(a, b)
+        assert 1 == self.cal.div(2, 1)
         print("登录操作222")
         assert 1 == self.cal.div(2, 1)
         print("登录操作333")
