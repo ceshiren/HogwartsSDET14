@@ -22,6 +22,7 @@ class Test():
         time.sleep(2)
         self.driver.find_element(By.LINK_TEXT, "霍格沃兹测试学院 – 测试开发工程师的黄埔军校").click()
 
+
     def test_wework(self):
         self.driver.get("https://work.weixin.qq.com/")
         # 创建或者打开一个数据库
