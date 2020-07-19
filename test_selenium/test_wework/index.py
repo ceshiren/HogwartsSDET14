@@ -12,7 +12,23 @@ class Index(BasePage):
         添加成员
         :return:
         """
-        self.find(By.CSS_SELECTOR, ".index_service_cnt_itemWrap").click()
+
+        def add_member_condition(x):
+            """
+            改写显示等待条件
+            :param x:
+            :return:
+            """
+            elements_len = len(self.finds(By.ID, "username"))
+            if elements_len <= 0:
+                self.find(By.CSS_SELECTOR, ".js_has_member>div:nth-child(1)>a:nth-child(2)").click()
+            # 如果 username 不存在，就会触发 until 中的列循环
+            return elements_len > 0
+
+        self.find(By.CSS_SELECTOR, "#menu_contacts").click()
+        # self.wait_for_condition(add_member_condition)
+        self.find(By.CSS_SELECTOR, ".js_has_member>div:nth-child(1)>a:nth-child(2)").click()
+
         return AddMember(self._driver)
 
     def goto_import_address(self):
