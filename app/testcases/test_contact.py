@@ -16,14 +16,11 @@ class TestContact:
 
     def setup_class(self):
         self.app = App()
-        self.main = self.app.start().goto_main()
-
     def teardown_class(self):
         self.app.stop()
 
     def setup(self):
-        self.app.restart()
-
+        self.main = self.app.start().goto_main()
     def teardown(self):
         self.app.back(5)
 
@@ -42,4 +39,4 @@ class TestContact:
         text = mypage.get_toast()
         # mypage.add_menual()
         assert '成功' in text
-        # self.app.back()
+        self.app.back()
