@@ -67,3 +67,7 @@ class TestWeChat:
     def teardown(self):
         # 消毁session
         self.driver.quit()
+
+
+
+        c(**a)

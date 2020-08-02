@@ -1,0 +1,3 @@
+- by: xpath
+  locator: "//*[contains(@resource-id, 'stock_item_container')]//*[@text='阿里巴巴-SW']/../..//*[@text='已添加']"
+  action: len > 0

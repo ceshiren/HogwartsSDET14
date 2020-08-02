@@ -1,5 +1,7 @@
+import yaml
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
+from xueqiu_app.page.handle_black import handle_black
 
 
 class BasePage:
@@ -12,29 +14,13 @@ class BasePage:
     def __init__(self, driver: WebDriver = None):
         self.driver = driver
 
+    @handle_black
     def find(self, by, locator=None):
-        try:
-            # 如果元素找到，就清空 error 计数
-            if locator is None:
-                result = self.driver.find_element(*by)
-            else:
-                result = self.driver.find_element(by, locator)
-            self._error_num = 0
-            return result
-        except Exception as e:
-            # 如果没找到，就进行黑名单处理
-            if self._error_num > self._max_err_num:
-                # 如果 erro 次数大于指定指，清空 error 次数并报异常
-                self._error_num = 0
-                raise e
-            self._error_num += 1
-            for ele in self._black_list:
-                # 对黑名单进行点击
-                eles = self.finds(ele)
-                if len(eles) > 0:
-                    eles[0].click()
-                    return self.find(by, locator)
-            raise ValueError("元素不在黑名单中")
+        if locator is None:
+            result = self.driver.find_element(*by)
+        else:
+            result = self.driver.find_element(by, locator)
+        return result
 
     def finds(self, by, locator=None):
         if locator is None:
@@ -44,3 +30,17 @@ class BasePage:
 
     def set_implicitly_wait(self, second):
         self.driver.implicitly_wait(second)
+
+    def steps(self, path):
+        with open(path, encoding="utf-8") as f:
+            steps = yaml.safe_load(f)
+        for step in steps:
+            if "action" in step.keys():
+                action = step["action"]
+                if "click" == action:
+                    self.find(step["by"], step["locator"]).click()
+                if "send" == action:
+                    self.find(step["by"], step["locator"]).send_keys(step["value"])
+                if "len > 0" == action:
+                    eles = self.finds(step["by"], step["locator"])
+                    return len(eles) > 0
