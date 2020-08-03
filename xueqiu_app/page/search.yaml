@@ -1,0 +1,16 @@
+search:
+  - by: xpath
+    locator: "//*[@resource-id='com.xueqiu.android:id/search_input_text']"
+    action: send
+    value: ${stock_name}
+  - by: xpath
+    locator: "//*[@text='${stock_name}' and @resource-id='com.xueqiu.android:id/name']"
+    action: click
+  - by: xpath
+    locator: "//*[contains(@resource-id, 'stock_item_container')]//*[@text='${stock_name}']/../..//*[@text='加自选']"
+    action: click
+
+is_choose:
+  - by: xpath
+    locator: "//*[contains(@resource-id, 'stock_item_container')]//*[@text='${stock_name}']/../..//*[@text='已添加']"
+    action: len > 0

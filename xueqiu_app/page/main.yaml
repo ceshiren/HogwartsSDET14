@@ -1,3 +1,7 @@
-- by: xpath
-  locator: "//*[@resource-id='android:id/tabs']//*[@text='行情']"
-  action: click
+goto_market:
+  - by: xpath
+    locator: "//*[@resource-id='com.xueqiu.android:id/post_status']"
+    action: click
+  - by: xpath
+    locator: "//*[@resource-id='android:id/tabs']//*[@text='行情']"
+    action: click
