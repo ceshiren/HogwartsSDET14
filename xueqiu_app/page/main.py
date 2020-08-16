@@ -1,4 +1,5 @@
 import yaml
+from appium.webdriver.common.touch_action import TouchAction
 from selenium.webdriver.common.by import By
 
 from xueqiu_app.page.base_page import BasePage
@@ -13,4 +14,6 @@ class Main(BasePage):
         # self.find(By.XPATH, "//*[@resource-id='android:id/tabs']//*[@text='行情']").click()
         # self.set_implicitly_wait(3)
         self.steps("../page/main.yaml", "goto_market")
+        TouchAction().press().move_to().release().perform()
         return Market(self.driver)
+
